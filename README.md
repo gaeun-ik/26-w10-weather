@@ -54,8 +54,8 @@ Google Antigravity IDE를 활용하여 단계별 구현 계획(Implementation Pl
 
 ## 실행 및 배포 링크
 
-- Netlify 배포 URL: `배포 후 추가 예정`
-- GitHub Pages 배포 URL: `배포 후 추가 예정`
+- Netlify 배포 URL: `https://gaeun-weather.netlify.app` (Netlify 대시보드 연결 후 생성된 주소 입력)
+- GitHub Pages 배포 URL: https://gaeun-ik.github.io/26-w10-weather/
 
 ---
 
