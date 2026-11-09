@@ -61,19 +61,162 @@
   margin: 0;
   font-size: 15px;
   color: var(--text);
-  max-width: 600px;
+  max-width: 640px;
   line-height: 1.5;
 }
 
 /* --------------------------------------------------------------------------
-   도시 선택 바
+   검색 & 프리셋 섹션
+   -------------------------------------------------------------------------- */
+.search-and-presets-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* 도시 검색 바 (디바운스 연동) */
+.city-search-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--text);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 13px 44px 13px 44px;
+  font-size: 15px;
+  font-family: inherit;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  color: var(--text-h);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--bg);
+  box-shadow: 0 0 0 3px var(--accent-bg);
+}
+
+.search-spinner {
+  position: absolute;
+  right: 16px;
+  color: var(--accent);
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.search-clear-btn:hover {
+  background: var(--border);
+  color: var(--text-h);
+}
+
+/* 드롭다운 결과 */
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.search-results-list {
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  border-radius: 10px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.search-result-item:hover {
+  background: var(--code-bg);
+}
+
+.item-pin-icon {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.item-text-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-city-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.item-city-detail {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.search-empty {
+  padding: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   도시 빠른 선택 바
    -------------------------------------------------------------------------- */
 .city-selector-section {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   padding: 12px 16px;
   background: var(--code-bg);
   border: 1px solid var(--border);
@@ -150,6 +293,17 @@
   width: 100%;
 }
 
+.dashboard-content-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  transition: opacity 0.2s ease;
+}
+
+.dashboard-content-flow.updating {
+  opacity: 0.7;
+}
+
 .status-box {
   display: flex;
   flex-direction: column;
@@ -214,21 +368,18 @@
 }
 
 /* --------------------------------------------------------------------------
-   카드 그리드
+   현재 상태 2열 카드 그리드
    -------------------------------------------------------------------------- */
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
-  transition: opacity 0.2s ease;
-}
-
-.cards-grid.updating {
-  opacity: 0.7;
 }
 
 .weather-card,
-.air-card {
+.air-card,
+.hourly-chart-card,
+.weekly-forecast-card {
   display: flex;
   flex-direction: column;
   padding: 24px;
@@ -240,7 +391,9 @@
 }
 
 .weather-card:hover,
-.air-card:hover {
+.air-card:hover,
+.hourly-chart-card:hover,
+.weekly-forecast-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
 }
@@ -281,9 +434,7 @@
   background: transparent;
 }
 
-/* --------------------------------------------------------------------------
-   현재 날씨 본문
-   -------------------------------------------------------------------------- */
+/* 현재 날씨 */
 .weather-hero {
   display: flex;
   align-items: center;
@@ -372,9 +523,7 @@
   color: var(--text-h);
 }
 
-/* --------------------------------------------------------------------------
-   대기질 (미세먼지) 카드
-   -------------------------------------------------------------------------- */
+/* 대기질 카드 */
 .aq-badge {
   display: inline-flex;
   align-items: center;
@@ -481,6 +630,197 @@
 }
 
 /* --------------------------------------------------------------------------
+   24시간 기온 SVG 차트
+   -------------------------------------------------------------------------- */
+.chart-temp-range-badge {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent);
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: var(--accent-bg);
+}
+
+.hourly-chart-scroll-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.hourly-svg {
+  display: block;
+  width: 100%;
+  min-width: 600px;
+  height: 150px;
+}
+
+.chart-dot {
+  fill: var(--bg);
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  transition: r 0.2s ease;
+}
+
+.now-dot {
+  fill: var(--accent);
+  stroke: #ffffff;
+  stroke-width: 2.5;
+}
+
+.chart-temp-text {
+  font-size: 12px;
+  font-weight: 700;
+  fill: var(--text-h);
+}
+
+.chart-time-text {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--text);
+}
+
+.chart-time-text.now-label {
+  fill: var(--accent);
+  font-weight: 800;
+}
+
+.hourly-summary-footer {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text);
+  border-top: 1px dashed var(--border);
+  padding-top: 10px;
+}
+
+.hourly-summary-footer p {
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   7일간 주간 예보 카드
+   -------------------------------------------------------------------------- */
+.forecast-range-hint {
+  font-size: 13px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.weekly-days-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weekly-day-row {
+  display: grid;
+  grid-template-columns: 100px 140px 70px 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  transition: background 0.15s ease;
+}
+
+.weekly-day-row:hover {
+  background: var(--social-bg);
+}
+
+.day-name-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.day-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-h);
+}
+
+.day-label.today-label {
+  color: var(--accent);
+}
+
+.day-date {
+  font-size: 12px;
+  color: var(--text);
+}
+
+.day-weather-col {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.day-weather-desc {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.day-rain-col {
+  display: flex;
+  align-items: center;
+}
+
+.rain-prob-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #0284c7;
+}
+
+.rain-prob-zero {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.5;
+}
+
+.day-temp-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.day-min-temp {
+  font-size: 13px;
+  font-weight: 600;
+  color: #3b82f6;
+  width: 28px;
+  text-align: right;
+}
+
+.day-max-temp {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ef4444;
+  width: 28px;
+  text-align: left;
+}
+
+.temp-bar-track {
+  position: relative;
+  flex-grow: 1;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.temp-bar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #3b82f6 0%, #f59e0b 50%, #ef4444 100%);
+}
+
+/* --------------------------------------------------------------------------
    푸터 섹션
    -------------------------------------------------------------------------- */
 .dashboard-footer {
@@ -550,8 +890,10 @@
   }
 
   .weather-card,
-  .air-card {
-    padding: 20px;
+  .air-card,
+  .hourly-chart-card,
+  .weekly-forecast-card {
+    padding: 18px;
   }
 
   .temp-number {
@@ -561,5 +903,14 @@
   .weather-icon-container {
     width: 76px;
     height: 76px;
+  }
+
+  .weekly-day-row {
+    grid-template-columns: 80px 1fr auto;
+    gap: 8px;
+  }
+
+  .day-rain-col {
+    display: none;
   }
 }
