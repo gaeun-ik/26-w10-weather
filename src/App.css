@@ -2,6 +2,70 @@
    실시간 날씨 & 미세먼지 대시보드 스타일 (App.css)
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   옵션 A: 날씨 및 주야간 기반 동적 비주얼 테마 래퍼
+   -------------------------------------------------------------------------- */
+.dashboard-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  transition: background 0.8s ease, color 0.4s ease;
+}
+
+/* 1. 낮 맑음 (화사한 스카이블루 ~ 골든 앰버) */
+.theme-day-clear {
+  background: linear-gradient(135deg, rgba(239, 246, 255, 0.95) 0%, rgba(254, 243, 199, 0.4) 50%, rgba(240, 249, 255, 0.95) 100%);
+}
+
+/* 2. 밤 맑음 (깊은 미드나이트 블루 ~ 딥 네이비) */
+.theme-night-clear {
+  background: linear-gradient(135deg, #090d16 0%, #151a2e 50%, #0d111e 100%);
+}
+
+.theme-night-clear .header-title-wrap h1,
+.theme-night-clear .location-name,
+.theme-night-clear .temp-number,
+.theme-night-clear .day-label,
+.theme-night-clear .day-weather-desc,
+.theme-night-clear .metric-value,
+.theme-night-clear .air-metric-number,
+.theme-night-clear .item-city-name {
+  color: #f8fafc;
+}
+
+/* 3. 비 / 소나기 (쿨 슬레이트 블루) */
+.theme-rain {
+  background: linear-gradient(135deg, rgba(241, 245, 249, 0.95) 0%, rgba(207, 250, 254, 0.45) 50%, rgba(224, 242, 254, 0.95) 100%);
+}
+
+/* 4. 눈 / 싸락눈 (차분한 파우더 화이트 블루) */
+.theme-snow {
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(224, 231, 255, 0.4) 50%, rgba(241, 245, 249, 0.95) 100%);
+}
+
+/* 5. 흐림 / 안개 (소프트 미스트 그레이) */
+.theme-cloudy {
+  background: linear-gradient(135deg, rgba(241, 245, 249, 0.95) 0%, rgba(226, 232, 240, 0.45) 50%, rgba(248, 250, 252, 0.95) 100%);
+}
+
+/* 6. 뇌우 (다크 퍼플 슬레이트) */
+.theme-thunder {
+  background: linear-gradient(135deg, #130e1e 0%, #29103e 50%, #0d0b16 100%);
+}
+
+.theme-thunder .header-title-wrap h1,
+.theme-thunder .location-name,
+.theme-thunder .temp-number,
+.theme-thunder .day-label,
+.theme-thunder .day-weather-desc,
+.theme-thunder .metric-value,
+.theme-thunder .air-metric-number,
+.theme-thunder .item-city-name {
+  color: #f8fafc;
+}
+
+/* --------------------------------------------------------------------------
+   대시보드 메인 컨테이너
+   -------------------------------------------------------------------------- */
 .dashboard-container {
   width: 100%;
   max-width: 960px;
@@ -71,7 +135,7 @@
 .search-and-presets-section {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 /* 도시 검색 바 (디바운스 연동) */
@@ -206,6 +270,83 @@
   text-align: center;
   font-size: 14px;
   color: var(--text);
+}
+
+/* --------------------------------------------------------------------------
+   옵션 B: 최근 조회 도시 (localStorage) 바
+   -------------------------------------------------------------------------- */
+.recent-cities-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: var(--social-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  font-size: 13px;
+  overflow-x: auto;
+}
+
+.recent-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.recent-chips-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.recent-chip {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.recent-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.recent-chip.active {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.recent-clear-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: var(--text);
+  background: transparent;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: 4px;
+  transition: all 0.15s ease;
+}
+
+.recent-clear-btn:hover {
+  color: #ef4444;
+  border-color: #ef4444;
 }
 
 /* --------------------------------------------------------------------------
