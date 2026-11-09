@@ -86,3 +86,4 @@ export default function CurrentWeather({ city, currentWeather, weatherInfo }) {
     </article>
   )
 }
+

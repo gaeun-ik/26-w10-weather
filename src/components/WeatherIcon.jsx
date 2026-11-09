@@ -26,3 +26,4 @@ export default function WeatherIcon({ name, size = 48, color = 'currentColor', c
   const IconComponent = ICON_MAP[name] || Cloud
   return <IconComponent size={size} color={color} className={`weather-icon-svg ${className}`} />
 }
+
